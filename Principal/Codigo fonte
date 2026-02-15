@@ -1,0 +1,52 @@
+import csv
+
+class Imovel:
+    def __init__(self, tipo):
+        self.tipo = tipo.lower()
+        self.valor = 0
+
+    def calcular_valor(self, quartos=1, garagem=False, vagas_estudio=0, sem_crianca=False):
+        if self.tipo == "apartamento":
+            self.valor = 700
+            if quartos == 2:
+                self.valor += 200
+            if garagem:
+                self.valor += 300
+            if sem_crianca:
+                self.valor *= 0.95
+
+        elif self.tipo == "casa":
+            self.valor = 900
+            if quartos == 2:
+                self.valor += 250
+            if garagem:
+                self.valor += 300
+
+        elif self.tipo == "estudio":
+            self.valor = 1200
+            if vagas_estudio >= 2:
+                self.valor += 250
+                extras = vagas_estudio - 2
+                if extras > 0:
+                    self.valor += extras * 60
+
+        return self.valor
+
+
+class Orcamento:
+    def __init__(self, valor_mensal):
+        self.valor_mensal = valor_mensal
+        self.contrato_total = 2000
+
+    def parcelar_contrato(self, parcelas):
+        return self.contrato_total / parcelas
+
+    def gerar_csv(self, nome_arquivo="orcamento.csv"):
+        with open(nome_arquivo, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Mes", "Valor Aluguel"])
+
+            for mes in range(1, 13):
+                writer.writerow([mes, round(self.valor_mensal, 2)])
+
+        print(f"Arquivo '{nome_arquivo}' gerado com sucesso!")
