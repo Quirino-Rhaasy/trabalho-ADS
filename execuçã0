@@ -1,0 +1,37 @@
+def main():
+    print("=== Gerador de Orçamento de Aluguel ===")
+    tipo = input("Tipo de imóvel (apartamento/casa/estudio): ")
+
+    imovel = Imovel(tipo)
+
+    quartos = 1
+    garagem = False
+    vagas_estudio = 0
+    sem_crianca = False
+
+    if tipo == "apartamento" or tipo == "casa":
+        quartos = int(input("Número de quartos (1 ou 2): "))
+        garagem = input("Deseja garagem? (s/n): ").lower() == "s"
+
+    if tipo == "apartamento":
+        sem_crianca = input("Sem crianças? (s/n): ").lower() == "s"
+
+    if tipo == "estudio":
+        vagas_estudio = int(input("Número de vagas de estacionamento: "))
+
+    valor = imovel.calcular_valor(quartos, garagem, vagas_estudio, sem_crianca)
+
+    orcamento = Orcamento(valor)
+
+    parcelas = int(input("Parcelar contrato em quantas vezes (1 a 5)? "))
+    valor_parcela = orcamento.parcelar_contrato(parcelas)
+
+    print("\n===== RESULTADO =====")
+    print(f"Valor mensal do aluguel: R$ {valor:.2f}")
+    print(f"Contrato parcelado em {parcelas}x de R$ {valor_parcela:.2f}")
+
+    orcamento.gerar_csv()
+
+
+if __name__ == "__main__":
+    main()
